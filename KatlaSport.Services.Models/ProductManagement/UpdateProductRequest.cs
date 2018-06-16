@@ -36,6 +36,6 @@ namespace KatlaSport.Services.ProductManagement
         /// <summary>
         /// Gets or sets a product price.
         /// </summary>
-        public decimal? Price { get; set; }
+        public decimal Price { get; set; }
     }
 }
