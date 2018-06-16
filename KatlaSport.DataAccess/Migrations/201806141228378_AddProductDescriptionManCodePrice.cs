@@ -1,4 +1,4 @@
-namespace KatlaSport.DataAccess.Migrations
+    namespace KatlaSport.DataAccess.Migrations
 {
     using System.Data.Entity.Migrations;
 
