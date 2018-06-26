@@ -31,7 +31,7 @@ namespace KatlaSport.Services.HiveManagement
         /// <inheritdoc/>
         public async Task<List<HiveListItem>> GetHivesAsync()
         {
-            var dbHives = await _context.Hives.OrderBy(h => h.Id).ToArrayAsync();
+            var dbHives = await _context.Hives.OrderBy(h => h.Id).ToArrayAsync().ConfigureAwait(false);
             var hives = dbHives.Select(h => Mapper.Map<HiveListItem>(h)).ToList();
 
             foreach (HiveListItem hive in hives)
@@ -45,7 +45,7 @@ namespace KatlaSport.Services.HiveManagement
         /// <inheritdoc/>
         public async Task<Hive> GetHiveAsync(int hiveId)
         {
-            var dbHives = await _context.Hives.Where(h => h.Id == hiveId).ToArrayAsync();
+            var dbHives = await _context.Hives.Where(h => h.Id == hiveId).ToArrayAsync().ConfigureAwait(false);
             if (dbHives.Length == 0)
             {
                 throw new RequestedResourceNotFoundException();
@@ -57,7 +57,7 @@ namespace KatlaSport.Services.HiveManagement
         /// <inheritdoc/>
         public async Task<Hive> CreateHiveAsync(UpdateHiveRequest createRequest)
         {
-            var dbHives = await _context.Hives.Where(h => h.Code == createRequest.Code).ToArrayAsync();
+            var dbHives = await _context.Hives.Where(h => h.Code == createRequest.Code).ToArrayAsync().ConfigureAwait(false);
             if (dbHives.Length > 0)
             {
                 throw new RequestedResourceHasConflictException("code");
@@ -68,7 +68,7 @@ namespace KatlaSport.Services.HiveManagement
             dbHive.LastUpdatedBy = _userContext.UserId;
             _context.Hives.Add(dbHive);
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync().ConfigureAwait(false);
 
             return Mapper.Map<Hive>(dbHive);
         }
@@ -76,13 +76,13 @@ namespace KatlaSport.Services.HiveManagement
         /// <inheritdoc/>
         public async Task<Hive> UpdateHiveAsync(int hiveId, UpdateHiveRequest updateRequest)
         {
-            var dbHives = await _context.Hives.Where(p => p.Code == updateRequest.Code && p.Id != hiveId).ToArrayAsync();
+            var dbHives = await _context.Hives.Where(p => p.Code == updateRequest.Code && p.Id != hiveId).ToArrayAsync().ConfigureAwait(false);
             if (dbHives.Length > 0)
             {
                 throw new RequestedResourceHasConflictException("code");
             }
 
-            dbHives = await _context.Hives.Where(p => p.Id == hiveId).ToArrayAsync();
+            dbHives = await _context.Hives.Where(p => p.Id == hiveId).ToArrayAsync().ConfigureAwait(false);
             if (dbHives.Length == 0)
             {
                 throw new RequestedResourceNotFoundException();
@@ -93,7 +93,7 @@ namespace KatlaSport.Services.HiveManagement
             Mapper.Map(updateRequest, dbHive);
             dbHive.LastUpdatedBy = _userContext.UserId;
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync().ConfigureAwait(false);
 
             return Mapper.Map<Hive>(dbHive);
         }
@@ -101,7 +101,7 @@ namespace KatlaSport.Services.HiveManagement
         /// <inheritdoc/>
         public async Task DeleteHiveAsync(int hiveId)
         {
-            var dbHives = await _context.Hives.Where(p => p.Id == hiveId).ToArrayAsync();
+            var dbHives = await _context.Hives.Where(p => p.Id == hiveId).ToArrayAsync().ConfigureAwait(false);
             if (dbHives.Length == 0)
             {
                 throw new RequestedResourceNotFoundException();
@@ -114,13 +114,13 @@ namespace KatlaSport.Services.HiveManagement
             }
 
             _context.Hives.Remove(dbHive);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
         public async Task SetStatusAsync(int hiveId, bool deletedStatus)
         {
-            var dbHives = await _context.Hives.Where(h => h.Id == hiveId).ToArrayAsync();
+            var dbHives = await _context.Hives.Where(h => h.Id == hiveId).ToArrayAsync().ConfigureAwait(false);
 
             if (dbHives.Length == 0)
             {
@@ -134,7 +134,7 @@ namespace KatlaSport.Services.HiveManagement
                 dbHive.LastUpdated = DateTime.UtcNow;
                 dbHive.LastUpdatedBy = _userContext.UserId;
 
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync().ConfigureAwait(false);
             }
         }
     }
